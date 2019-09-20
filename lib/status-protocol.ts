@@ -10,8 +10,8 @@ import { signXml, GeneralParameters } from './idin-protocol';
 import { fetchResponse } from './idin-request';
 
 interface StatusProtocol extends StatusParameters {
-  merchantId: number
-  merchantSubId: number
+  merchantId: string
+  merchantSubId: string
   privateKey: string
   publicKeyFingerprint: string
   publicKey: string

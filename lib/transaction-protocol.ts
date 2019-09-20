@@ -7,8 +7,8 @@ import { signXml, GeneralParameters } from './idin-protocol';
 import { fetchResponse } from './idin-request';
 
 interface TransactionProtocol extends TransactionParams {
-  merchantId: number
-  merchantSubId: number
+  merchantId: string
+  merchantSubId: string
   publicKeyFingerprint: string
   privateKey: string
   publicKey: string
@@ -77,7 +77,7 @@ export interface TransactionParams {
   loa: string
   merchantReturnUrl: string
   idPrefix: string
-  requestedService: number
+  requestedService: string
   defaultLanguage: string
   expirationPeriod: string
   issuerId: string

@@ -19,8 +19,8 @@ describe('Status Protocol', (): void => {
   test('no specific object param', async () => {
     const { getStatusResponse } = require('./index');
     const gParams: GeneralParameters = {
-      merchantId: 0,
-      merchantSubId: 0,
+      merchantId: '0',
+      merchantSubId: '0',
       privateKey: '',
       publicKey: '',
       publicKeyFingerprint: '',
@@ -40,8 +40,8 @@ describe('Status Protocol', (): void => {
   test('missing specific keys', async () => {
     const { getStatusResponse } = require('./index');
     const gParams: GeneralParameters = {
-      merchantId: 0,
-      merchantSubId: 0,
+      merchantId: '0',
+      merchantSubId: '0',
       privateKey: '',
       publicKey: '',
       publicKeyFingerprint: '',
@@ -66,8 +66,8 @@ describe('Status Protocol', (): void => {
     const { getStatusResponse } = require('./index');
 
     const gParams: GeneralParameters = {
-      merchantId: 0,
-      merchantSubId: 0,
+      merchantId: '0',
+      merchantSubId: '0',
       privateKey: '',
       publicKey: '',
       publicKeyFingerprint: '',
@@ -213,8 +213,8 @@ describe('Status Protocol', (): void => {
     const { getStatusResponse } = require('./index');
 
     const gParams: GeneralParameters = {
-      merchantId: 0,
-      merchantSubId: 0,
+      merchantId: '0',
+      merchantSubId: '0',
       privateKey: '',
       publicKey: '',
       publicKeyFingerprint: '',
@@ -374,8 +374,8 @@ describe('Status Protocol', (): void => {
     const { getStatusResponse } = require('./index');
 
     const gParams: GeneralParameters = {
-      merchantId: 0,
-      merchantSubId: 0,
+      merchantId: '0',
+      merchantSubId: '0',
       privateKey: '',
       publicKey: '',
       publicKeyFingerprint: '',

@@ -29,7 +29,7 @@ export const checkParams = (funcName: string, generalParams?: GeneralParameters,
       issuerId: '',
       loa: '',
       merchantReturnUrl: '',
-      requestedService: 0,
+      requestedService: '0',
       transactionId: '',
     };
     keysIteration(Object.keys(sKeys), specificParams as TransactionParams);
@@ -41,8 +41,8 @@ export const checkParams = (funcName: string, generalParams?: GeneralParameters,
   }
 
   const gKeys: GeneralParameters = {
-    merchantId: 0,
-    merchantSubId: 0,
+    merchantId: '0',
+    merchantSubId: '0',
     privateKey: '',
     publicKey: '',
     publicKeyFingerprint: '',

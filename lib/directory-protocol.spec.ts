@@ -35,8 +35,8 @@ describe('Directory Protocol', (): void => {
     const { getDirectoryResponse } = require('./index');
 
     const gParams: GeneralParameters = {
-      merchantId: 0,
-      merchantSubId: 0,
+      merchantId: '0',
+      merchantSubId: '0',
       privateKey: '',
       publicKey: '',
       publicKeyFingerprint: '',
@@ -127,8 +127,8 @@ describe('Directory Protocol', (): void => {
     const { getDirectoryResponse } = require('./index');
 
     const gParams: GeneralParameters = {
-      merchantId: 0,
-      merchantSubId: 0,
+      merchantId: '0',
+      merchantSubId: '0',
       privateKey: '',
       publicKey: '',
       publicKeyFingerprint: '',

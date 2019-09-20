@@ -19,8 +19,8 @@ describe('Transaction Protocol', (): void => {
   test('no specific object param', async () => {
     const { getTransactionResponse } = require('./index');
     const gParams: GeneralParameters = {
-      merchantId: 0,
-      merchantSubId: 0,
+      merchantId: '0',
+      merchantSubId: '0',
       privateKey: '',
       publicKey: '',
       publicKeyFingerprint: '',
@@ -40,8 +40,8 @@ describe('Transaction Protocol', (): void => {
   test('missing specific keys', async () => {
     const { getTransactionResponse } = require('./index');
     const gParams: GeneralParameters = {
-      merchantId: 0,
-      merchantSubId: 0,
+      merchantId: '0',
+      merchantSubId: '0',
       privateKey: '',
       publicKey: '',
       publicKeyFingerprint: '',
@@ -66,8 +66,8 @@ describe('Transaction Protocol', (): void => {
     const { getTransactionResponse } = require('./index');
 
     const gParams: GeneralParameters = {
-      merchantId: 0,
-      merchantSubId: 0,
+      merchantId: '0',
+      merchantSubId: '0',
       privateKey: '',
       publicKey: '',
       publicKeyFingerprint: '',
@@ -82,7 +82,7 @@ describe('Transaction Protocol', (): void => {
       issuerId: '',
       loa: '',
       merchantReturnUrl: '',
-      requestedService: 46346,
+      requestedService: '46346',
       transactionId: '',
     };
 
@@ -160,8 +160,8 @@ describe('Transaction Protocol', (): void => {
     const { getTransactionResponse } = require('./index');
 
     const gParams: GeneralParameters = {
-      merchantId: 0,
-      merchantSubId: 0,
+      merchantId: '0',
+      merchantSubId: '0',
       privateKey: '',
       publicKey: '',
       publicKeyFingerprint: '',
@@ -176,7 +176,7 @@ describe('Transaction Protocol', (): void => {
       issuerId: '',
       loa: '',
       merchantReturnUrl: '',
-      requestedService: 46346,
+      requestedService: '46346',
       transactionId: '',
     };
 

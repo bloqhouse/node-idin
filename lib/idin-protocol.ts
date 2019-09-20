@@ -2,8 +2,8 @@ import { SignedXml, xpath } from 'xml-crypto';
 import { DOMParser } from 'xmldom';
 
 export interface GeneralParameters {
-  merchantId: number
-  merchantSubId: number
+  merchantId: string
+  merchantSubId: string
   routingEndpoint: string
   routingCert: string
   publicKey: string

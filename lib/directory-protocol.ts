@@ -6,8 +6,8 @@ import { GeneralParameters, signXml } from './idin-protocol';
 import { xml2json } from 'xml-js';
 
 interface DirectoryProtocol {
-  merchantId: number
-  merchantSubId: number
+  merchantId: string
+  merchantSubId: string
   privateKey: string
   publicKey: string
   publicKeyFingerprint: string
