@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "allowJs": false,
+    "target": "es6",
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "lib": [
+      "es2017",
+      "dom",
+      "esnext.asynciterable"
+    ],
+    "alwaysStrict": true,
+    "strict": true,
+  },
+  "exclude": [
+    "node_modules",
+    "app",
+    "lib/*.spec.ts",
+    "lib/_mocks.ts"
+  ],
+  "include": [
+    "lib/*.ts",
+    "index.d.ts"
+  ],
+  "compileOnSave": true
+}
