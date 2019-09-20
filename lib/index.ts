@@ -9,12 +9,14 @@ export function getDirectoryResponse(arg1: GeneralParameters) {
   return getDirectory(arg1);
 }
 
-export function getStatusResponse(arg1: GeneralParameters, arg2?: StatusParameters) {
+export function getStatusResponse(arg1: GeneralParameters, arg2: StatusParameters) {
   checkParams('getStatus', ...arguments);
-  return getStatus(arg1, arg2!);
+  return getStatus(arg1, arg2);
 }
 
-export function getTransactionResponse(arg1: GeneralParameters, arg2?: TransactionParams) {
+export function getTransactionResponse(arg1: GeneralParameters, arg2: TransactionParams) {
   checkParams('getTransaction', ...arguments);
-  return getTransaction(arg1, arg2!);
+  return getTransaction(arg1, arg2);
 }
+
+export { GeneralParameters, TransactionParams, StatusParameters };
