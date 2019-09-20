@@ -65,21 +65,29 @@ export default async function getStatusResponse(
   ifError(err1);
 
   const parsed = JSON.parse(xml2json(statusResponse!, { compact: true }));
+  if (parsed['awidxma:AcquirerErrorRes']) {
+    const error = parsed['awidxma:AcquirerErrorRes'];
+    return {
+      createDateTimestamp: error['awidxma:createDateTimestamp'],
+      Error: error['awidxma:Error'],
+    };
+  }
 
+  const acqStatusRes = parsed['awidxma:AcquirerStatusRes'];
   const response = {
-    createDateTimestamp: parsed['awidxma:AcquirerStatusRes']['awidxma:createDateTimestamp']._text,
+    createDateTimestamp: acqStatusRes['awidxma:createDateTimestamp']._text,
     Acquirer: {
-      acquirerID: parsed['awidxma:AcquirerStatusRes']['awidxma:Acquirer']['awidxma:acquirerID']._text,
+      acquirerID: acqStatusRes['awidxma:Acquirer']['awidxma:acquirerID']._text,
     },
     Transaction: {
-      transactionID: parsed['awidxma:AcquirerStatusRes']['awidxma:Transaction']['awidxma:transactionID']._text,
-      status: parsed['awidxma:AcquirerStatusRes']['awidxma:Transaction']['awidxma:status']._text,
-      statusDateTimestamp: parsed['awidxma:AcquirerStatusRes']['awidxma:Transaction']['awidxma:statusDateTimestamp']._text,
+      transactionID: acqStatusRes['awidxma:Transaction']['awidxma:transactionID']._text,
+      status: acqStatusRes['awidxma:Transaction']['awidxma:status']._text,
+      statusDateTimestamp: acqStatusRes['awidxma:Transaction']['awidxma:statusDateTimestamp']._text,
       Response: {},
     },
   };
 
-  const container = parsed['awidxma:AcquirerStatusRes']['awidxma:Transaction']['awidxma:container'];
+  const container = acqStatusRes['awidxma:Transaction']['awidxma:container'];
   const saml = (container as { [key: string]: any }).hasOwnProperty('samlp:Response') ? '' : '2';
 
   try {

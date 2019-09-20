@@ -91,6 +91,90 @@ describe('Status Protocol', (): void => {
     });
   });
 
+  test('response error error', async () => {
+    const mockNameId = 'wefw';
+    const mockXpathMapReturn = (saml: '' | '2') => {
+      return [JSON.stringify({
+        ...!saml ? {
+          [`saml${saml}:NameID`]: {
+            _text: mockNameId,
+          }
+        } : {
+          [`saml${saml}:Attribute`]: {
+            _attributes: {
+              Name: 'consumer. consumer.',
+            },
+            [`saml${saml}:AttributeValue`]: {
+              _text: '',
+            },
+          },
+        },
+      })];
+    };
+    jest.mock('xml-crypto', (): any => ({
+      xpath: (): any => ({
+        pop: (): any => '',
+        map: (): string[] => mockXpathMapReturn(''),
+      }),
+      SignedXml: function() {
+        this.loadSignature = (): void => { return; };
+        this.checkSignature = (): any => true;
+        this.addReference = (): void => { return; };
+        this.computeSignature = (): void => { return; };
+        this.getSignedXml = (): string => '';
+      },
+    }));
+    jest.mock('xml-encryption-beta', (): any => ({
+      decrypt: (): string => '',
+    }));
+
+    const mockStatus = {
+      'awidxma:AcquirerErrorRes': {
+        'awidxma:createDateTimestamp': {
+          _text: '',
+        },
+        'ns3:Error': { },
+      },
+    };
+    jest.mock('xml-js', () => {
+      return {
+        xml2json: jest.fn()
+          .mockReturnValueOnce(JSON.stringify(mockStatus))
+          .mockReturnValueOnce(mockXpathMapReturn('')),
+      };
+    });
+    const { getStatusResponse } = require('./index');
+
+    const gParams: GeneralParameters = {
+      merchantId: '0',
+      merchantSubId: '0',
+      privateKey: '',
+      publicKey: '',
+      publicKeyFingerprint: '',
+      routingCert: '',
+      routingEndpoint: 'url',
+    };
+    const sParams: StatusParameters = {
+      transactionId: 'ff',
+    };
+
+    jest.mock('node-fetch');
+    const fetch = require('node-fetch');
+    // @ts-ignore
+    const { Response } = jest.requireActual('node-fetch');
+    fetch.mockReturnValueOnce(Promise.resolve(new Response(mockStatus)));
+
+    await expect(getStatusResponse(gParams, sParams)).resolves.toMatchObject({
+      createDateTimestamp: { _text: '' },
+      Error: {},
+    });
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith('url', {
+      body: '',
+      method: 'POST',
+    });
+  });
+
   test('try error', async () => {
     const mockNameId = 'wefw';
     const mockXpathMapReturn = (saml: '' | '2') => {
@@ -131,7 +215,6 @@ describe('Status Protocol', (): void => {
     const mockTransactionId = '4fwef1';
     const mockInResponseTo = 'fawefaw';
     const mockStatusCode = 'www222awefaw';
-    const mockResponseStatusCode = 'awefaw';
     const mockIssuerId = 'awefw';
     const mockStatusDateTime = 'wefawef';
 
@@ -190,26 +273,6 @@ describe('Status Protocol', (): void => {
           .mockReturnValueOnce(mockXpathMapReturn('')),
       };
     });
-    const toReceive = {
-      createDateTimestamp: '',
-      Acquirer: {
-        acquirerID: '',
-      },
-      Transaction: {
-        Response: {
-          TransactionID: mockTransactionId,
-          EntranceCode: mockInResponseTo,
-          StatusCode: mockResponseStatusCode,
-          IssuerID: mockIssuerId,
-          Attributes: {
-            NameID: mockNameId,
-          },
-        },
-        status: mockStatusCode,
-        statusDateTimestamp: mockStatusDateTime,
-        transactionID: mockTransactionId,
-      },
-    };
     const { getStatusResponse } = require('./index');
 
     const gParams: GeneralParameters = {

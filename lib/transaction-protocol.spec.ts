@@ -208,7 +208,7 @@ describe('Transaction Protocol', (): void => {
       },
       Transaction: {
         transactionCreateDateTimestamp: transactTimestamp,
-      }
+      },
     };
 
     fetch.mockReturnValueOnce(Promise.resolve(new Response(mockAcqErr(false))));

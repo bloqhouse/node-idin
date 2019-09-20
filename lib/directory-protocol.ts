@@ -66,16 +66,17 @@ export default async function getDirectoryResponse(
   }));
   ifError(err);
   const parsed = JSON.parse(xml2json(res!, { compact: true }));
+  const directoryRes = parsed['ns3:DirectoryRes'];
   return {
-    createDateTimestamp: parsed['ns3:DirectoryRes']['ns3:createDateTimestamp']._text,
+    createDateTimestamp: directoryRes['ns3:createDateTimestamp']._text,
     Acquirer: {
-      acquirerID: parsed['ns3:DirectoryRes']['ns3:Acquirer']['ns3:acquirerID']._text,
+      acquirerID: directoryRes['ns3:Acquirer']['ns3:acquirerID']._text,
     },
     Directory: {
-      directoryDateTimestamp: parsed['ns3:DirectoryRes']['ns3:Directory']['ns3:directoryDateTimestamp']._text,
+      directoryDateTimestamp: directoryRes['ns3:Directory']['ns3:directoryDateTimestamp']._text,
       Country: {
-        countryNames: parsed['ns3:DirectoryRes']['ns3:Directory']['ns3:Country']['ns3:countryNames']._text,
-        Issuer: _parseIssuers(parsed['ns3:DirectoryRes']['ns3:Directory']['ns3:Country']['ns3:Issuer']),
+        countryNames: directoryRes['ns3:Directory']['ns3:Country']['ns3:countryNames']._text,
+        Issuer: _parseIssuers(directoryRes['ns3:Directory']['ns3:Country']['ns3:Issuer']),
       },
     },
   };
