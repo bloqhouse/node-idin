@@ -1,0 +1,117 @@
+{
+  "name": "node-idin",
+  "version": "1.0.0",
+  "description": "NodeJS Library for iDIN (https://www.idin.nl/)",
+  "main": "dist/index.js",
+  "engines": {
+    "node": ">=6"
+  },
+  "scripts": {
+    "commit": "git-cz",
+    "debug": "npm run build && node --inspect-brk dist/examples/index.js",
+    "build": "rimraf dist && tsc -d -p .",
+    "prepublishOnly": "rimraf dist && tsc -d -p .",
+    "pretest": "rimraf dist && tsc -p .",
+    "test": "cross-env NODE_ENV=test jest --coverage",
+    "test:ci": "npm run pretest && NODE_ENV=test jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "test:watch": "cross-env NODE_ENV=test jest --coverage --watchAll",
+    "lint": "tslint -p .",
+    "example": "ts-node examples/index.ts",
+    "lint:fix": "tslint --fix -p .",
+    "release": "standard-version",
+    "validate": "npm ls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JFGHT/node-idin"
+  },
+  "keywords": [],
+  "contributors": [
+    {
+      "name": "Jesús Fuentes",
+      "email": "jesusfght@gmail.com"
+    }
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JFGHT/node-idin/issues"
+  },
+  "homepage": "https://github.com/JFGHT/node-idin#readme",
+  "devDependencies": {
+    "@types/dotenv": "^4.0.3",
+    "@types/jest": "^22.2.3",
+    "@types/node": "^9.6.4",
+    "@types/node-fetch": "^2.1.2",
+    "@types/uniqid": "^4.1.2",
+    "@types/xml2js": "^0.4.2",
+    "@types/xmldom": "^0.1.29",
+    "commitizen": "^2.9.6",
+    "coveralls": "^3.0.0",
+    "cross-env": "^5.2.0",
+    "cz-conventional-changelog": "^2.1.0",
+    "jest": "^22.4.3",
+    "nsp": "^3.2.1",
+    "precommit-hook": "^3.0.0",
+    "standard": "^11.0.1",
+    "standard-version": "^4.3.0",
+    "ts-jest": "^22.4.2",
+    "ts-node": "^5.0.1",
+    "tslint": "^5.9.1",
+    "typescript": "^2.8.1"
+  },
+  "dependencies": {
+    "await-to-js": "^2.0.1",
+    "dotenv": "^5.0.1",
+    "key-fingerprint": "^1.1.0",
+    "node-fetch": "^2.2.0",
+    "pretty-data": "^0.40.0",
+    "uniqid": "^5.0.3",
+    "xml-crypto": "^0.10.1",
+    "xml-encryption-beta": "^0.11.17",
+    "xml-js": "^1.6.2",
+    "xml2js": "^0.4.19",
+    "xmldom": "^0.1.27"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "pre-commit": [
+    "lint"
+  ],
+  "jest": {
+    "automock": false,
+    "transformIgnorePatterns": [
+      "/node_modules/",
+      "/app/",
+      "<rootDir>/dist/"
+    ],
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testPathIgnorePatterns": [
+      "/coverage/",
+      "/dist/",
+      "/node_modules/",
+      "/app/",
+      "index.ts"
+    ],
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ],
+    "testEnvironment": "node",
+    "coverageThreshold": {
+      "global": {
+        "statements": 100,
+        "branches": 100,
+        "functions": 100,
+        "lines": 100
+      }
+    }
+  }
+}
