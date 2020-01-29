@@ -77,6 +77,12 @@ describe('Directory Protocol', (): void => {
           _text: '',
         },
       };
+      const countries = {
+        'ns3:countryNames': {
+          _text: '',
+        },
+        'ns3:Issuer': arr ? [mockIssuer] : mockIssuer,
+      };
       return JSON.stringify({
         'ns3:DirectoryRes': {
           'ns3:createDateTimestamp': {
@@ -91,12 +97,7 @@ describe('Directory Protocol', (): void => {
             'ns3:directoryDateTimestamp': {
               _text: '',
             },
-            'ns3:Country': [{
-              'ns3:countryNames': {
-                _text: '',
-              },
-              'ns3:Issuer': arr ? [mockIssuer] : mockIssuer,
-            }],
+            'ns3:Country': arr ? [countries] : countries,
           },
         },
       });
