@@ -22,6 +22,11 @@ export interface XMLIssuer {
   'ns3:issuerName': XMLNode
 }
 
+export interface XMLCountry {
+  'ns3:countryNames': XMLNode
+  'ns3:Issuer': XMLIssuer | XMLIssuer[]
+}
+
 export interface Issuer {
   issuerID: string
   issuerName: string
@@ -46,6 +51,8 @@ function formatDirectoryProtocolXML({ merchantId, merchantSubId, publicKey, priv
   return signXml({ xml, publicKey, publicKeyFingerprint, privateKey });
 }
 
+const transformToArray = (source: any) => Array.isArray(source) ? source : [source];
+
 function _parseIssuers(issuers: XMLIssuer | XMLIssuer[]): Issuer[] {
   const parse = (issuer: XMLIssuer) => {
     return {
@@ -67,17 +74,19 @@ export default async function getDirectoryResponse(
   ifError(err);
   const parsed = JSON.parse(xml2json(res!, { compact: true }));
   const directoryRes = parsed['ns3:DirectoryRes'];
+  const directory = directoryRes['ns3:Directory'];
+  const countries = transformToArray(directory['ns3:Country']);
   return {
     createDateTimestamp: directoryRes['ns3:createDateTimestamp']._text,
     Acquirer: {
       acquirerID: directoryRes['ns3:Acquirer']['ns3:acquirerID']._text,
     },
     Directory: {
-      directoryDateTimestamp: directoryRes['ns3:Directory']['ns3:directoryDateTimestamp']._text,
-      Country: {
-        countryNames: directoryRes['ns3:Directory']['ns3:Country']['ns3:countryNames']._text,
-        Issuer: _parseIssuers(directoryRes['ns3:Directory']['ns3:Country']['ns3:Issuer']),
-      },
+      directoryDateTimestamp: directory['ns3:directoryDateTimestamp']._text,
+      Country: countries.map((country: XMLCountry) => ({
+        countryNames: country['ns3:countryNames']._text,
+        Issuer: _parseIssuers(country['ns3:Issuer']),
+      })),
     },
   };
 }

@@ -124,7 +124,7 @@ describe('Status Protocol', (): void => {
         this.getSignedXml = (): string => '';
       },
     }));
-    jest.mock('xml-encryption-beta', (): any => ({
+    jest.mock('xml-encryption', (): any => ({
       decrypt: (): string => '',
     }));
 
@@ -208,7 +208,7 @@ describe('Status Protocol', (): void => {
         this.getSignedXml = (): string => '';
       },
     }));
-    jest.mock('xml-encryption-beta', (): any => ({
+    jest.mock('xml-encryption', (): any => ({
       decrypt: (): string => '',
     }));
 
@@ -343,7 +343,7 @@ describe('Status Protocol', (): void => {
     jest.mock('util', (): any => ({
       promisify: (callback): any => callback,
     }));
-    jest.mock('xml-encryption-beta', (): any => ({
+    jest.mock('xml-encryption', (): any => ({
       decrypt: (s: string): Promise<string> => Promise.resolve(s),
     }));
 

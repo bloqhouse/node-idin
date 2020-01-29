@@ -3,7 +3,7 @@ import to from 'await-to-js';
 import { promisify } from 'util';
 import { pd } from 'pretty-data';
 import { xpath } from 'xml-crypto';
-import { decrypt } from 'xml-encryption-beta';
+import { decrypt } from 'xml-encryption';
 import { xml2json } from 'xml-js';
 import { DOMParser } from 'xmldom';
 import { signXml, GeneralParameters } from './idin-protocol';
