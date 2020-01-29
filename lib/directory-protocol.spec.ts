@@ -91,12 +91,12 @@ describe('Directory Protocol', (): void => {
             'ns3:directoryDateTimestamp': {
               _text: '',
             },
-            'ns3:Country': {
+            'ns3:Country': [{
               'ns3:countryNames': {
                 _text: '',
               },
               'ns3:Issuer': arr ? [mockIssuer] : mockIssuer,
-            },
+            }],
           },
         },
       });
@@ -115,13 +115,13 @@ describe('Directory Protocol', (): void => {
       },
       Directory: {
         directoryDateTimestamp: '',
-        Country: {
+        Country: [{
           countryNames: '',
           Issuer: [{
             issuerID: '',
             issuerName: '',
           }],
-        },
+        }],
       },
     };
     const { getDirectoryResponse } = require('./index');
