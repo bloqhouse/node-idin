@@ -5,7 +5,7 @@
   
 
 Node.js Library for [iDIN](https://www.idin.nl/). You can find all the protocol documentation [here](https://betaalvereniging.atlassian.net/wiki/spaces/IIDIFMD/pages/588284049/iDIN+Merchant+Implemention+Guide+EN).
-Supporting Node 8+.
+Supporting Node 10+.
 
   
 
