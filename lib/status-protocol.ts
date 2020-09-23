@@ -96,8 +96,7 @@ export default async function getStatusResponse(
       EntranceCode: container[`saml${saml}p:Response`]._attributes.InResponseTo,
       StatusCode: container[`saml${saml}p:Response`][`saml${saml}p:Status`][`saml${saml}p:StatusCode`]._attributes.Value.split('status:')[1],
       IssuerID: container[`saml${saml}p:Response`][`saml${saml}:Assertion`][`saml${saml}:Issuer`]._text,
-      Attributes: Object.assign(
-        {},
+      Attributes: {
         ...(attributes as any[]).map(
           (a: any) => JSON.parse(xml2json(a, { compact: true }) as any),
         ).map(
@@ -106,7 +105,7 @@ export default async function getStatusResponse(
               (a[`saml${saml}:NameID`] && a[`saml${saml}:NameID`]._text) || a[`saml${saml}:Attribute`][`saml${saml}:AttributeValue`]._text,
           }),
         ),
-      ),
+      },
     };
   } catch (e) {
     ifError(e);

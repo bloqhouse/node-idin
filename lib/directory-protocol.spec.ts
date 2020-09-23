@@ -9,18 +9,6 @@ describe('Directory Protocol', (): void => {
     jest.resetModules();
   });
 
-  test('no general object param', async () => {
-    const { getDirectoryResponse } = require('./index');
-    // @ts-ignore
-    expect(() => getDirectoryResponse()).toThrow('No general object parameter found.');
-  });
-
-  test('missing gen keys', async () => {
-    const { getDirectoryResponse } = require('./index');
-    // @ts-ignore
-    expect(() => getDirectoryResponse({})).toThrow('Parameters missing.');
-  });
-
   test('response error', async () => {
     jest.mock('xml-crypto', (): any => ({
       xpath: (): string => '',
@@ -32,7 +20,7 @@ describe('Directory Protocol', (): void => {
         this.getSignedXml = (): string => '';
       },
     }));
-    const { getDirectoryResponse } = require('./index');
+    const { default: NodeIdin } = require('./index');
 
     const gParams: GeneralParameters = {
       merchantId: '0',
@@ -48,7 +36,7 @@ describe('Directory Protocol', (): void => {
     const fetch = require('node-fetch');
     fetch.mockReturnValue(Promise.reject('error1'));
 
-    await expect(getDirectoryResponse(gParams)).rejects.toThrowError('error1');
+    await expect(new NodeIdin(gParams).getDirectory()).rejects.toThrowError('error1');
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith('url', {
       body: '',
@@ -125,7 +113,7 @@ describe('Directory Protocol', (): void => {
         }],
       },
     };
-    const { getDirectoryResponse } = require('./index');
+    const { default: NodeIdin } = require('./index');
 
     const gParams: GeneralParameters = {
       merchantId: '0',
@@ -143,7 +131,7 @@ describe('Directory Protocol', (): void => {
     const { Response } = jest.requireActual('node-fetch');
     fetch.mockReturnValueOnce(Promise.resolve(new Response(mockIssuers(true))));
 
-    await expect(getDirectoryResponse(gParams)).resolves.toMatchObject(toReceive);
+    await expect(new NodeIdin(gParams).getDirectory()).resolves.toMatchObject(toReceive);
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith('url', {
       body: '',
@@ -152,7 +140,7 @@ describe('Directory Protocol', (): void => {
 
     fetch.mockReturnValueOnce(Promise.resolve(new Response(mockIssuers(false))));
 
-    await expect(getDirectoryResponse(gParams)).resolves.toMatchObject(toReceive);
+    await expect(new NodeIdin(gParams).getDirectory()).resolves.toMatchObject(toReceive);
     expect(fetch).toHaveBeenCalledTimes(2);
     expect(fetch).toHaveBeenCalledWith('url', {
       body: '',

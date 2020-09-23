@@ -1,47 +1,62 @@
+
 # node-idin [![Build Status](https://travis-ci.org/bloqhouse/node-idin.svg?branch=master)](https://travis-ci.org/bloqhouse/node-idin) [![Coverage Status](https://coveralls.io/repos/github/bloqhouse/node-idin/badge.svg?branch=master)](https://coveralls.io/github/bloqhouse/node-idin?branch=master)
 
+  
+  
 
-Node.js Library for [iDIN](https://www.idin.nl/)
+Node.js Library for [iDIN](https://www.idin.nl/). You can find all the protocol documentation [here](https://betaalvereniging.atlassian.net/wiki/spaces/IIDIFMD/pages/588284049/iDIN+Merchant+Implemention+Guide+EN).
+Supporting Node 8+.
 
-Node-idin has 3 exportable methods. These methods accept two objects as parameters.
+  
 
- 1. `GeneralParameters` object which includes:
-```ts
-merchantId: string
-merchantSubId: string
-routingEndpoint: string // callback url
-routingCert: string
-publicKey: string
-publicKeyFingerprint: string
-privateKey: string
+## How to use
+
+Install the dep by:
+```bash
+yarn add node-idin
 ```
- 2. Specific object per method, more info in the table below.
 
-| Method | Specific object required | Description |
-|--|--|--|
-| getDirectoryResponse | Not required | Gets the different issuers (banks) available |
-| getTransactionResponse | { loa: string, merchantReturnUrl: string, idPrefix: string, requestedService: number, defaultLanguage: string, expirationPeriod: string, issuerId: string, transactionId: string } | Initial step to get the user's data. |
-| getStatusResponse | { transactionId: string } | Final data retrieval |
-
-Example:
+Create a `NodeIdin` instance:
 
 ```ts
-try {
-	const gParams: GeneralParameters = {
-		merchantId: '35235',
-		merchantSubId: '0',
-		routingEndpoint: 'https://abnamro-test.bank-request.com/bvn-idx-bankid-rs/bankidGateway',
-		routingCert: '-----BEGIN CERTIFICATE-----...',
-		privateKey: '-----BEGIN RSA PRIVATE KEY-----...',
-		publicKey: '-----BEGIN PUBLIC KEY-----...',
-		publicKeyFingerprint: 'xekf2o3f...',
-	};
-	const specificParams: StatusParameters = {
-		transactionId: 'wefawef2',
-	};
-	const data = await getStatusResponse(gParams, specificParams);
-	console.log(data)
-} catch (e) {
-	console.log(e);
+const config = {
+	merchantId:  '35235',
+	merchantSubId:  '0',
+	routingEndpoint:  'https://abnamro-test.bank-request.com/bvn-idx-bankid-rs/bankidGateway',
+	routingCert:  '-----BEGIN CERTIFICATE-----...',
+	privateKey:  '-----BEGIN RSA PRIVATE KEY-----...',
+	publicKey:  '-----BEGIN PUBLIC KEY-----...',
+	publicKeyFingerprint:  'xekf2o3f...',
 }
+
+const idin = new NodeIdin(config);
 ```
+
+Use the method you need:
+
+```ts
+const directory = await idin.getDirectory();
+```
+
+```ts
+const transaction = await idin.getTransaction({
+	loa: 'loa3',
+	merchantReturnUrl: 'https://...',
+	idPrefix: 'RND',
+	requestedService: '21968',
+	defaultLanguage: 'en',
+	expirationPeriod: 'PT5M',
+	issuerId: 'randomId',
+	transactionId: 'randomId#2',
+});
+```
+
+```ts
+const status = await idin.getStatus({ transactionId:  '92fo2k3qdd' });
+```
+
+## Notes
+
+- Read protocol documentation for a better understanding of the parameters.
+
+- This library does not fully implement the protocol and has some issues that still need to be addressed. Use at your own risk.

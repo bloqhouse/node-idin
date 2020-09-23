@@ -10,48 +10,6 @@ describe('Transaction Protocol', (): void => {
     jest.resetModules();
   });
 
-  test('no general object param', async () => {
-    const { getTransactionResponse } = require('./index');
-    // @ts-ignore
-    expect(() => getTransactionResponse()).toThrow('No general object parameter found.');
-  });
-
-  test('no specific object param', async () => {
-    const { getTransactionResponse } = require('./index');
-    const gParams: GeneralParameters = {
-      merchantId: '0',
-      merchantSubId: '0',
-      privateKey: '',
-      publicKey: '',
-      publicKeyFingerprint: '',
-      routingCert: '',
-      routingEndpoint: 'url',
-    };
-    // @ts-ignore
-    expect(() => getTransactionResponse(gParams)).toThrow('No specific object parameter found.');
-  });
-
-  test('missing gen keys', async () => {
-    const { getTransactionResponse } = require('./index');
-    // @ts-ignore
-    expect(() => getTransactionResponse({}, {})).toThrow('Parameters missing.');
-  });
-
-  test('missing specific keys', async () => {
-    const { getTransactionResponse } = require('./index');
-    const gParams: GeneralParameters = {
-      merchantId: '0',
-      merchantSubId: '0',
-      privateKey: '',
-      publicKey: '',
-      publicKeyFingerprint: '',
-      routingCert: '',
-      routingEndpoint: 'url',
-    };
-    // @ts-ignore
-    expect(() => getTransactionResponse(gParams, {})).toThrow('Parameters missing.');
-  });
-
   test('response error', async () => {
     jest.mock('xml-crypto', (): any => ({
       xpath: (): string => '',
@@ -63,7 +21,7 @@ describe('Transaction Protocol', (): void => {
         this.getSignedXml = (): string => '';
       },
     }));
-    const { getTransactionResponse } = require('./index');
+    const { default: NodeIdin } = require('./index');
 
     const gParams: GeneralParameters = {
       merchantId: '0',
@@ -90,7 +48,7 @@ describe('Transaction Protocol', (): void => {
     const fetch = require('node-fetch');
     fetch.mockReturnValue(Promise.reject('error1'));
 
-    await expect(getTransactionResponse(gParams, sParams)).rejects.toThrowError('error1');
+    await expect(new NodeIdin(gParams).getTransaction(sParams)).rejects.toThrowError('error1');
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith('url', {
       body: '',
@@ -157,7 +115,7 @@ describe('Transaction Protocol', (): void => {
       };
     });
 
-    const { getTransactionResponse } = require('./index');
+    const { default: NodeIdin } = require('./index');
 
     const gParams: GeneralParameters = {
       merchantId: '0',
@@ -191,7 +149,7 @@ describe('Transaction Protocol', (): void => {
     const { Response } = jest.requireActual('node-fetch');
     fetch.mockReturnValueOnce(Promise.resolve(new Response(mockAcqErr(true))));
 
-    await expect(getTransactionResponse(gParams, sParams)).resolves.toMatchObject(toReceive1);
+    await expect(new NodeIdin(gParams).getTransaction(sParams)).resolves.toMatchObject(toReceive1);
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith('url', {
       body: '',
@@ -213,7 +171,7 @@ describe('Transaction Protocol', (): void => {
 
     fetch.mockReturnValueOnce(Promise.resolve(new Response(mockAcqErr(false))));
 
-    await expect(getTransactionResponse(gParams, sParams)).resolves.toMatchObject(toReceive2);
+    await expect(new NodeIdin(gParams).getTransaction(sParams)).resolves.toMatchObject(toReceive2);
     expect(fetch).toHaveBeenCalledTimes(2);
     expect(fetch).toHaveBeenCalledWith('url', {
       body: '',
