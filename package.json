@@ -4,7 +4,7 @@
   "description": "NodeJS Library for iDIN (https://www.idin.nl/)",
   "main": "dist/index.js",
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "scripts": {
     "commit": "git-cz",
@@ -25,7 +25,12 @@
     "type": "git",
     "url": "git+https://github.com/bloqhouse/node-idin"
   },
-  "keywords": [],
+  "keywords": [
+    "idin",
+    "node-idin",
+    "kyc",
+    "idin kyc"
+  ],
   "contributors": [
     {
       "name": "Jesús Fuentes",
