@@ -59,7 +59,7 @@ export async function verifySignature({ routingCert, signedXml }: VerifySignatur
 
   const result = XML.checkSignature(signedXml.trim());
   if (!result) {
-    console.error(new Error(XML.validationErrors));
+    console.log(new Error(XML.validationErrors));
   }
 
   return signedXml;

@@ -1,22 +1,22 @@
-import { checkParams } from './utils';
-import getDirectory from './directory-protocol';
-import getTransaction, { TransactionParams } from './transaction-protocol';
-import getStatus, { StatusParameters } from './status-protocol';
+import getDirectoryResponse from './directory-protocol';
+import getTransactionResponse, { TransactionParams } from './transaction-protocol';
+import getStatusResponse, { StatusParameters } from './status-protocol';
 import { GeneralParameters } from './idin-protocol';
 
-export function getDirectoryResponse(arg1: GeneralParameters) {
-  checkParams('getDirectory', ...arguments);
-  return getDirectory(arg1);
-}
+export default class NodeIdin {
+  constructor(
+    private config: GeneralParameters,
+  ) { }
 
-export function getStatusResponse(arg1: GeneralParameters, arg2: StatusParameters) {
-  checkParams('getStatus', ...arguments);
-  return getStatus(arg1, arg2);
-}
+  public getDirectory() {
+    return getDirectoryResponse(this.config);
+  }
 
-export function getTransactionResponse(arg1: GeneralParameters, arg2: TransactionParams) {
-  checkParams('getTransaction', ...arguments);
-  return getTransaction(arg1, arg2);
-}
+  public getTransaction(transactionConfig: TransactionParams) {
+    return getTransactionResponse(this.config, transactionConfig);
+  }
 
-export { GeneralParameters, TransactionParams, StatusParameters };
+  public getStatus(statusConfig: StatusParameters) {
+    return getStatusResponse(this.config, statusConfig);
+  }
+}

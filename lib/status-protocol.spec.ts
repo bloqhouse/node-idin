@@ -10,48 +10,6 @@ describe('Status Protocol', (): void => {
     jest.resetModules();
   });
 
-  test('no general object param', async () => {
-    const { getStatusResponse } = require('./index');
-    // @ts-ignore
-    expect(() => getStatusResponse()).toThrow('No general object parameter found.');
-  });
-
-  test('no specific object param', async () => {
-    const { getStatusResponse } = require('./index');
-    const gParams: GeneralParameters = {
-      merchantId: '0',
-      merchantSubId: '0',
-      privateKey: '',
-      publicKey: '',
-      publicKeyFingerprint: '',
-      routingCert: '',
-      routingEndpoint: 'url',
-    };
-    // @ts-ignore
-    expect(() => getStatusResponse(gParams)).toThrow('No specific object parameter found.');
-  });
-
-  test('missing gen keys', async () => {
-    const { getStatusResponse } = require('./index');
-    // @ts-ignore
-    expect(() => getStatusResponse({}, {})).toThrow('Parameters missing.');
-  });
-
-  test('missing specific keys', async () => {
-    const { getStatusResponse } = require('./index');
-    const gParams: GeneralParameters = {
-      merchantId: '0',
-      merchantSubId: '0',
-      privateKey: '',
-      publicKey: '',
-      publicKeyFingerprint: '',
-      routingCert: '',
-      routingEndpoint: 'url',
-    };
-    // @ts-ignore
-    expect(() => getStatusResponse(gParams, {})).toThrow('Parameters missing.');
-  });
-
   test('response error', async () => {
     jest.mock('xml-crypto', (): any => ({
       xpath: (): string => '',
@@ -63,7 +21,7 @@ describe('Status Protocol', (): void => {
         this.getSignedXml = (): string => '';
       },
     }));
-    const { getStatusResponse } = require('./index');
+    const { default: NodeIdin } = require('./index');
 
     const gParams: GeneralParameters = {
       merchantId: '0',
@@ -83,7 +41,7 @@ describe('Status Protocol', (): void => {
     const fetch = require('node-fetch');
     fetch.mockReturnValue(Promise.reject('error1'));
 
-    await expect(getStatusResponse(gParams, sParams)).rejects.toThrowError('error1');
+    await expect(new NodeIdin(gParams).getStatus(sParams)).rejects.toThrowError('error1');
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith('url', {
       body: '',
@@ -143,7 +101,7 @@ describe('Status Protocol', (): void => {
           .mockReturnValueOnce(mockXpathMapReturn('')),
       };
     });
-    const { getStatusResponse } = require('./index');
+    const { default: NodeIdin } = require('./index');
 
     const gParams: GeneralParameters = {
       merchantId: '0',
@@ -164,7 +122,7 @@ describe('Status Protocol', (): void => {
     const { Response } = jest.requireActual('node-fetch');
     fetch.mockReturnValueOnce(Promise.resolve(new Response(mockStatus)));
 
-    await expect(getStatusResponse(gParams, sParams)).resolves.toMatchObject({
+    await expect(new NodeIdin(gParams).getStatus(sParams)).resolves.toMatchObject({
       createDateTimestamp: { _text: '' },
       Error: {},
     });
@@ -273,7 +231,7 @@ describe('Status Protocol', (): void => {
           .mockReturnValueOnce(mockXpathMapReturn('')),
       };
     });
-    const { getStatusResponse } = require('./index');
+    const { default: NodeIdin } = require('./index');
 
     const gParams: GeneralParameters = {
       merchantId: '0',
@@ -294,7 +252,7 @@ describe('Status Protocol', (): void => {
     const { Response } = jest.requireActual('node-fetch');
     fetch.mockReturnValueOnce(Promise.resolve(new Response(mockStatus(''))));
 
-    await expect(getStatusResponse(gParams, sParams)).rejects.toThrowError();
+    await expect(new NodeIdin(gParams).getStatus(sParams)).rejects.toThrowError();
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith('url', {
       body: '',
@@ -434,7 +392,7 @@ describe('Status Protocol', (): void => {
         transactionID: mockTransactionId,
       },
     };
-    const { getStatusResponse } = require('./index');
+    const { default: NodeIdin } = require('./index');
 
     const gParams: GeneralParameters = {
       merchantId: '0',
@@ -455,7 +413,7 @@ describe('Status Protocol', (): void => {
     const { Response } = jest.requireActual('node-fetch');
     fetch.mockReturnValueOnce(Promise.resolve(new Response(mockStatus(''))));
 
-    await expect(getStatusResponse(gParams, sParams)).resolves.toMatchObject(toReceive1);
+    await expect(new NodeIdin(gParams).getStatus(sParams)).resolves.toMatchObject(toReceive1);
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith('url', {
       body: '',
@@ -485,7 +443,7 @@ describe('Status Protocol', (): void => {
 
     fetch.mockReturnValueOnce(Promise.resolve(new Response(mockStatus('2'))));
 
-    await expect(getStatusResponse(gParams, sParams)).resolves.toMatchObject(toReceive2);
+    await expect(new NodeIdin(gParams).getStatus(sParams)).resolves.toMatchObject(toReceive2);
     expect(fetch).toHaveBeenCalledTimes(2);
     expect(fetch).toHaveBeenCalledWith('url', {
       body: '',

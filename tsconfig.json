@@ -2,15 +2,13 @@
   "compilerOptions": {
     "module": "commonjs",
     "allowJs": false,
-    "target": "es6",
+    "target": "es2018",
     "noImplicitAny": true,
     "sourceMap": true,
     "moduleResolution": "node",
     "outDir": "dist",
     "lib": [
-      "es2017",
-      "dom",
-      "esnext.asynciterable"
+      "es2018",
     ],
     "alwaysStrict": true,
     "strict": true,
