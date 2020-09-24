@@ -1,5 +1,5 @@
 
-# node-idin [![Build Status](https://travis-ci.org/bloqhouse/node-idin.svg?branch=master)](https://travis-ci.org/bloqhouse/node-idin) [![Coverage Status](https://coveralls.io/repos/github/bloqhouse/node-idin/badge.svg?branch=master)](https://coveralls.io/github/bloqhouse/node-idin?branch=master)
+# node-idin [![Build Status](https://travis-ci.com/bloqhouse/node-idin.svg?branch=master)](https://travis-ci.com/bloqhouse/node-idin) [![Coverage Status](https://coveralls.io/repos/github/bloqhouse/node-idin/badge.svg?branch=master)](https://coveralls.io/github/bloqhouse/node-idin?branch=master)
 
   
   
