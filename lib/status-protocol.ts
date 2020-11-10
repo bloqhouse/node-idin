@@ -73,24 +73,24 @@ export default async function getStatusResponse(
     };
   }
 
-  const acqStatusRes = parsed['awidxma:AcquirerStatusRes'];
-  const response = {
-    createDateTimestamp: acqStatusRes['awidxma:createDateTimestamp']._text,
-    Acquirer: {
-      acquirerID: acqStatusRes['awidxma:Acquirer']['awidxma:acquirerID']._text,
-    },
-    Transaction: {
-      transactionID: acqStatusRes['awidxma:Transaction']['awidxma:transactionID']._text,
-      status: acqStatusRes['awidxma:Transaction']['awidxma:status']._text,
-      statusDateTimestamp: acqStatusRes['awidxma:Transaction']['awidxma:statusDateTimestamp']._text,
-      Response: {},
-    },
-  };
-
-  const container = acqStatusRes['awidxma:Transaction']['awidxma:container'];
-  const saml = (container as { [key: string]: any }).hasOwnProperty('samlp:Response') ? '' : '2';
-
   try {
+    const acqStatusRes = parsed['awidxma:AcquirerStatusRes'];
+    const response = {
+      createDateTimestamp: acqStatusRes['awidxma:createDateTimestamp']._text,
+      Acquirer: {
+        acquirerID: acqStatusRes['awidxma:Acquirer']['awidxma:acquirerID']._text,
+      },
+      Transaction: {
+        transactionID: acqStatusRes['awidxma:Transaction']['awidxma:transactionID']._text,
+        status: acqStatusRes['awidxma:Transaction']['awidxma:status']._text,
+        statusDateTimestamp: acqStatusRes['awidxma:Transaction']['awidxma:statusDateTimestamp']._text,
+        Response: {},
+      },
+    };
+
+    const container = acqStatusRes['awidxma:Transaction']['awidxma:container'];
+    const saml = (container as { [key: string]: any }).hasOwnProperty('samlp:Response') ? '' : '2';
+
     response.Transaction.Response = {
       TransactionID: container[`saml${saml}p:Response`]._attributes.ID,
       EntranceCode: container[`saml${saml}p:Response`]._attributes.InResponseTo,
@@ -108,9 +108,10 @@ export default async function getStatusResponse(
         ),
       ),
     };
+
+    return response;
   } catch (e) {
+    console.log(parsed);
     ifError(e);
   }
-
-  return response;
 }
