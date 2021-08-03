@@ -68,7 +68,7 @@
     "xml-crypto": "^0.10.1",
     "xml-encryption": "^1.2.1",
     "xml-js": "^1.6.2",
-    "xmldom": "^0.3.0"
+    "xmldom": "^0.6.0"
   },
   "config": {
     "commitizen": {
