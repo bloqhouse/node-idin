@@ -62,7 +62,7 @@
   "dependencies": {
     "await-to-js": "^2.0.1",
     "key-fingerprint": "^1.1.0",
-    "node-fetch": "^2.2.0",
+    "node-fetch": "^3.1.1",
     "pretty-data": "^0.40.0",
     "uniqid": "^5.0.3",
     "xml-crypto": "^0.10.1",
